@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Move-In Proof Kit — Tenant Move-In Documentation System</title>
+<style>
+  :root{
+    --bg:#0e141a; --card:#17212b; --card2:#1f2c3b; --accent:#3fd0a5; --accent2:#ffb020;
+    --text:#eef3f8; --muted:#9fb0c3; --danger:#ff5d5d; --line:#2b3a4c;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.6;padding:0 0 60px}
+  header{background:linear-gradient(135deg,#0f1c18,#18282a);padding:48px 24px;text-align:center;border-bottom:1px solid var(--line)}
+  header h1{font-size:2rem;letter-spacing:-.5px}
+  header h1 .accent{color:var(--accent)}
+  header p{color:var(--muted);max-width:640px;margin:12px auto 0}
+  .badge{display:inline-block;background:var(--accent);color:#06231a;font-weight:700;font-size:.8rem;padding:4px 12px;border-radius:999px;margin-bottom:14px}
+  nav.tabs{position:sticky;top:0;z-index:10;background:#0b1117;border-bottom:1px solid var(--line);display:flex;justify-content:center;gap:4px;flex-wrap:wrap;padding:10px}
+  nav.tabs button{background:none;border:none;color:var(--muted);font-size:1rem;font-weight:600;padding:10px 18px;cursor:pointer;border-radius:8px}
+  nav.tabs button.active{background:var(--card);color:var(--accent);box-shadow:inset 0 0 0 1px var(--line)}
+  nav.tabs button .step{display:block;font-size:.7rem;font-weight:400;letter-spacing:1px;text-transform:uppercase}
+  .wrap{max-width:820px;margin:0 auto;padding:28px 20px}
+  section.tab{display:none}
+  section.tab.active{display:block}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px;margin-bottom:20px}
+  .card h2{margin-bottom:6px}
+  .card .sub{color:var(--muted);font-size:.95rem;margin-bottom:16px}
+  .q{margin-bottom:20px}
+  .q label{display:block;font-weight:600;margin-bottom:8px}
+  .opts{display:grid;gap:8px}
+  .opts button{background:var(--card2);border:1px solid var(--line);color:var(--text);text-align:left;padding:12px 14px;border-radius:10px;cursor:pointer;font-size:.95rem}
+  .opts button:hover{border-color:var(--accent)}
+  .opts button.sel{background:#0a2620;border-color:var(--accent);color:#9ff0d4}
+  .btn{display:inline-block;background:var(--accent);color:#06231a;border:none;font-weight:700;font-size:1rem;padding:14px 26px;border-radius:10px;cursor:pointer;margin-top:8px}
+  .btn.secondary{background:var(--card2);color:var(--text);border:1px solid var(--line)}
+  .btn.small{padding:9px 16px;font-size:.9rem}
+  .verdict{display:flex;gap:14px;align-items:flex-start;border-radius:12px;padding:18px;margin-bottom:12px}
+  .verdict .dot{flex:0 0 44px;height:44px;border-radius:50%;color:#fff;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:1.3rem}
+  .verdict h3{font-size:1.05rem;margin-bottom:4px}
+  .verdict p{font-size:.92rem;color:var(--muted)}
+  .verdict p b{color:var(--text)}
+  .verdict.strong{background:#0d1a15;border:1px solid #2f6b50}
+  .verdict.strong .dot{background:var(--accent)}
+  .verdict.mod{background:#1a1408;border:1px solid #6b5426}
+  .verdict.mod .dot{background:var(--accent2)}
+  .verdict.weak{background:#2a1414;border:1px solid #6b2d2d}
+  .verdict.weak .dot{background:var(--danger)}
+  .scorebar{height:14px;background:var(--card2);border-radius:999px;overflow:hidden;margin:10px 0 18px}
+  .scorebar>div{height:100%;background:linear-gradient(90deg,#ff5d5d,#ffb020,#3fd0a5)}
+  input[type=text],input[type=number],input[type=date],select,textarea{width:100%;background:#0e141f;border:1px solid var(--line);color:var(--text);padding:11px 13px;border-radius:9px;font-size:1rem;margin-top:6px}
+  textarea{min-height:110px;font-size:.92rem;resize:vertical}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:640px){.grid2{grid-template-columns:1fr}}
+  .field{margin-bottom:14px}
+  .field label{font-weight:600;font-size:.92rem}
+  .field small{color:var(--muted);display:block;margin-top:4px}
+  .result{background:#0d1a15;border:1px solid #2f6b50;border-radius:12px;padding:18px;margin-top:18px}
+  .result h3{color:var(--accent);margin-bottom:10px}
+  .room{border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px;background:var(--card2)}
+  .room h3{margin-bottom:10px;font-size:1rem}
+  .item{display:grid;grid-template-columns:1fr 150px;gap:10px;margin-bottom:10px;align-items:center}
+  .item span{font-size:.92rem}
+  .item select{margin-top:0;padding:8px 10px;font-size:.9rem}
+  .check{list-style:none}
+  .check li{display:flex;gap:12px;align-items:flex-start;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin-bottom:10px;cursor:pointer}
+  .check li input{margin-top:4px;transform:scale(1.2);accent-color:var(--accent)}
+  .check li .t b{display:block}
+  .check li .t small{color:var(--muted)}
+  .shotlist{counter-reset:shot}
+  .shotlist li{list-style:none;background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin-bottom:8px;font-size:.92rem;position:relative;padding-left:52px}
+  .shotlist li::before{counter-increment:shot;content:"Shot " counter(shot);position:absolute;left:10px;top:10px;font-size:.68rem;font-weight:700;color:var(--accent);letter-spacing:.5px}
+  .shotlist li small{display:block;color:var(--muted)}
+  .report{white-space:pre-wrap;font-family:Georgia,'Times New Roman',serif;background:#fff;color:#111;padding:32px;border-radius:12px;font-size:.95rem;line-height:1.7}
+  .report h2{font-size:1.2rem;margin:18px 0 8px}
+  .report table{width:100%;border-collapse:collapse;margin:10px 0;font-size:.9rem}
+  .report th,.report td{border:1px solid #999;padding:6px 8px;text-align:left}
+  .fine{font-size:.82rem;color:var(--muted);margin-top:18px}
+  .cross-sell{background:linear-gradient(135deg,#1a1408,#241c0c);border:1px solid #6b5426;border-radius:14px;padding:24px;margin-top:28px}
+  .cross-sell h3{color:var(--accent2);margin-bottom:8px}
+  .cross-sell a{color:var(--accent2);font-weight:700}
+  .statenote{background:#131c26;border-left:4px solid var(--accent);border-radius:0 10px 10px 0;padding:14px 16px;margin-bottom:14px;font-size:.92rem}
+  .statenote b{color:var(--accent)}
+  .statenote small{color:var(--muted)}
+  @media print{
+    body{background:#fff;color:#111;padding:0}
+    header,nav.tabs,.wrap>.card,footer.note,.no-print{display:none!important}
+    .wrap{max-width:100%;padding:0}
+    section.tab{display:block}
+    #report-out{display:block!important}
+    .report{border-radius:0}
+  }
+  footer.note{text-align:center;color:var(--muted);font-size:.85rem;margin-top:36px;padding:0 20px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="badge">MOVE-IN PROOF KIT · TENANT EDITION</div>
+  <h1>The deposit you fight to get back<br><span class="accent">gets protected on day one.</span></h1>
+  <p>Diagnose your move-in documentation risk, generate a room-by-room inspection report with a photo shot-list, and validate it with the Deposit-Proof Score — so a landlord can never charge you for damage that was already there.</p>
+</header>
+
+<nav class="tabs">
+  <button class="active" data-tab="diagnose"><span class="step">Step 1</span>🔍 Diagnose</button>
+  <button data-tab="generate"><span class="step">Step 2</span>🛠 Generate</button>
+  <button data-tab="validate"><span class="step">Step 3</span>✅ Validate</button>
+</nav>
+
+<div class="wrap">
+
+<!-- ============ STEP 1: DIAGNOSTIC ============ -->
+<section class="tab active" id="tab-diagnose">
+  <div class="card">
+    <h2>Move-In Risk Diagnostic</h2>
+    <p class="sub">Answer 6 quick questions. We score your exposure: a tenant with a signed inspection report, timestamped photos, and a paper trail to the landlord wins disputes. Everything else is a gift to their deposit claim.</p>
+    <div id="quiz"></div>
+    <button class="btn" onclick="scoreQuiz()">Get my risk verdict →</button>
+    <div id="quiz-result"></div>
+  </div>
+</section>
+
+<!-- ============ STEP 2: GENERATOR ============ -->
+<section class="tab" id="tab-generate">
+  <div class="card">
+    <h2>Inspection Report Builder</h2>
+    <p class="sub">Fill in your details, rate every room, and generate a printable move-in inspection report plus a numbered photo shot-list. Send a copy to your landlord within 48 hours of move-in — email beats text, because it creates a timestamped paper trail.</p>
+    <div class="grid2">
+      <div class="field"><label>Tenant name</label><input type="text" id="t-name" placeholder="e.g., Alex Rivera"></div>
+      <div class="field"><label>Property address + unit</label><input type="text" id="t-addr" placeholder="e.g., 412 Elm St, Apt 3B"></div>
+      <div class="field"><label>Move-in date</label><input type="date" id="t-date"></div>
+      <div class="field"><label>Landlord / manager name</label><input type="text" id="t-landlord" placeholder="e.g., BrightPath Properties"></div>
+      <div class="field"><label>Security deposit paid ($)</label><input type="number" id="t-deposit" placeholder="e.g., 1800"></div>
+      <div class="field"><label>State</label><select id="t-state">
+        <option value="">Select state…</option>
+        <option>CA</option><option>TX</option><option>FL</option><option>NY</option><option>WA</option>
+        <option>Other</option>
+      </select><small>State notes adjust what the report emphasizes. Not legal advice — check local rules.</small></div>
+    </div>
+    <div id="rooms"></div>
+    <button class="btn" onclick="generateReport()">Generate my inspection report + shot-list →</button>
+    <div class="no-print" id="report-out" style="display:none;margin-top:20px">
+      <div class="result">
+        <h3>📸 Photo shot-list (do this BEFORE unpacking)</h3>
+        <p class="sub" style="margin-bottom:10px">Shoot in this order. Enable timestamps/location on your camera app. Keep the originals — never filter or edit them.</p>
+        <ol class="shotlist" id="shots"></ol>
+      </div>
+      <div style="margin-top:20px"><div class="report" id="report-paper"></div></div>
+      <div class="no-print" style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn small" onclick="copyReport()">📋 Copy report text</button>
+        <button class="btn small secondary" onclick="window.print()">🖨 Print / save PDF</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ STEP 3: VALIDATOR ============ -->
+<section class="tab" id="tab-validate">
+  <div class="card">
+    <h2>Deposit-Proof Score</h2>
+    <p class="sub">Run this the day you move in, before you sleep there. Check every item you actually completed. Your score predicts how a deposit dispute would go — and tells you exactly what to fix while there's still time.</p>
+    <ul class="check" id="vcheck"></ul>
+    <button class="btn" onclick="scoreValidator()">Calculate my Deposit-Proof Score →</button>
+    <div id="vresult"></div>
+  </div>
+  <div class="card">
+    <h2>State notes — what your evidence has to stand up to</h2>
+    <div id="state-notes"></div>
+    <p class="fine">Not legal advice. Rules change; verify against your state's current statutes before relying on them in a dispute.</p>
+  </div>
+</section>
+
+<!-- CROSS-SELL -->
+<div class="cross-sell">
+  <h3>🛡 Next: when the landlord withholds your deposit anyway</h3>
+  <p>This kit protects you <b>before</b> move-out. But some landlords deduct first and negotiate never — the documentation you built today is the evidence the next kit turns into a demand letter. If you ever get an itemized list of bogus charges, grab the <b>Deposit Back Kit</b> — it diagnoses your case strength, generates the demand letter, and walks you through small-claims math.<br><br><a href="https://sestacey.gumroad.com/l/deposit-back-kit">→ Get the Deposit Back Kit</a> — same buyer, next step, same dollars.</p>
+</div>
+
+<footer class="note">
+  Move-In Proof Kit · $25 · sestacey.gumroad.com<br>
+  The deposit you fight to get back gets protected on day one.
+</footer>
+</div>
+
+<script>
+/* ---------- TAB NAV ---------- */
+document.querySelectorAll('nav.tabs button').forEach(b=>{
+  b.addEventListener('click',()=>{
+    document.querySelectorAll('nav.tabs button').forEach(x=>x.classList.remove('active'));
+    document.querySelectorAll('section.tab').forEach(x=>x.classList.remove('active'));
+    b.classList.add('active');
+    document.getElementById('tab-'+b.dataset.tab).classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+});
+
+/* ---------- STEP 1: DIAGNOSTIC ---------- */
+const QUIZ=[
+ {q:"Which state is the unit in?",opts:[["CA",0],["TX",1],["FL",1],["NY",1],["WA",0],["Other / not sure",2]],
+  note:"CA gives tenants strong statutory deposit rules; WA's checklist statute (below) helps you. Elsewhere, your evidence IS the law."},
+ {q:"Does your lease include a written move-in condition checklist?",opts:[["Yes, signed by both of us",0],["It's in the lease but I never saw a completed one",3],["No checklist mentioned at all",4]],
+  note:"No signed checklist = 'he said / she said' at move-out. In WA, a landlord who collects a deposit but never does a written checklist generally can't withhold for existing damage — that's your strongest card anywhere."},
+ {q:"Will you photograph / video the unit on move-in day?",opts:[["Yes — photos + video with timestamps",0],["I'll snap a few photos",3],["I wasn't planning to",5]],
+  note:"Judges and mediators believe timestamped photos, not memories. 'A few photos' misses the one scratch they charge you $300 for."},
+ {q:"How are you documenting the walkthrough with your landlord?",opts:[["Joint walkthrough, report signed by both",0],["I'll do it alone and email them a copy",2],["Verbal walkthrough, nothing written",5]],
+  note:"An emailed copy within 48 hours creates a timestamped paper trail a verbal walkthrough never will."},
+ {q:"How big is your deposit relative to one month's rent?",opts:[["Half a month or less",1],["One month",2],["More than one month",4]],
+  note:"Bigger deposits attract bigger deductions. The more money at stake, the more documentation you need."},
+ {q:"Who's the landlord?",opts:[["A large property-management company",3],["A small-time landlord with a few units",4],["A friend / roommate / informal arrangement",5]],
+  note:"Large companies deduct by process (they'll have photos; you need yours). Small landlords deduct by vibes (you need proof even more)."}
+];
+function renderQuiz(){
+  const el=document.getElementById('quiz');
+  QUIZ.forEach((item,i)=>{
+    const d=document.createElement('div');d.className='q';
+    d.innerHTML='<label>'+(i+1)+'. '+item.q+'</label><div class="opts"></div>';
+    const box=d.querySelector('.opts');
+    item.opts.forEach((o,j)=>{
+      const b=document.createElement('button');b.textContent=o[0];
+      b.onclick=()=>{box.querySelectorAll('button').forEach(x=>x.classList.remove('sel'));b.classList.add('sel');box.dataset.score=o[1];box.dataset.note=item.note;};
+      box.appendChild(b);
+    });
+    el.appendChild(d);
+  });
+}
+function scoreQuiz(){
+  const boxes=document.querySelectorAll('#quiz .opts');
+  for(const b of boxes){if(b.dataset.score===undefined){document.getElementById('quiz-result').innerHTML='<div class="verdict mod"><div class="dot">!</div><div><h3>Answer every question first</h3><p>Your verdict needs all six answers.</p></div></div>';return;}}
+  let total=0;const notes=[];
+  boxes.forEach(b=>{total+=parseInt(b.dataset.score);notes.push(b.dataset.note);});
+  const max=6*5, pct=Math.round(total/max*100);
+  let cls,vtitle,vbody;
+  if(pct<=30){cls='strong';vtitle='Low exposure — but finish the job';
+    vbody='You\'re doing the things that win disputes. <b>Go to Step 2 and generate the report</b> — a good plan undocumented is a good plan wasted.';}
+  else if(pct<=65){cls='mod';vtitle='Moderate exposure — plug the gaps';
+    vbody='You have partial protection, and partial is what loses disputes by $200–$800. <b>The gaps above are your to-do list. Generate the report (Step 2) and run the validator (Step 3) before move-in day ends.</b>'}
+  else{cls='weak';vtitle='High exposure — your deposit is at serious risk';
+    vbody='Right now a landlord could charge you for damage that was already there and you\'d have almost no defense. <b>Do Step 2 and Step 3 TODAY — before you unpack.</b> Documentation after move-in day is worth a fraction of what it\'s worth on move-in day.';}
+  let html='<div class="verdict '+cls+'"><div class="dot">'+(cls==='strong'?'✓':cls==='mod'?'~':'!')+'</div><div><h3>'+vtitle+'</h3><p>'+vbody+'</p></div></div>';
+  html+='<div class="scorebar"><div style="width:'+pct+'%"></div></div><p style="color:var(--muted);font-size:.9rem">Risk score: <b>'+total+' / '+max+'</b>. Higher = more exposure.</p>';
+  html+='<div style="margin-top:14px">'+notes.map(n=>'<div class="statenote">'+n+'</div>').join('')+'</div>';
+  html+='<p style="margin-top:14px"><button class="btn" onclick="document.querySelector(\'[data-tab=generate]\').click()">Build my inspection report →</button></p>';
+  document.getElementById('quiz-result').innerHTML=html;
+}
+
+/* ---------- STEP 2: GENERATOR ---------- */
+const ROOM_DEFS=[
+ ["Living / family room",["Walls & paint","Flooring / carpet","Windows & blinds","Doors & locks","Light fixtures","Outlets & switches"]],
+ ["Kitchen",["Cabinets & drawers","Countertops","Sink & faucet","Stove / oven","Refrigerator","Dishwasher","Flooring","Walls & paint"]],
+ ["Bathroom(s)",["Toilet","Sink & vanity","Shower / tub & grout","Tiles & caulk","Mirror & fixtures","Ventilation fan","Flooring"]],
+ ["Bedroom 1",["Walls & paint","Flooring / carpet","Closet doors & rails","Windows & blinds","Doors & locks","Light fixtures"]],
+ ["Bedroom 2 / extra room",["Walls & paint","Flooring / carpet","Closet","Windows & blinds","Doors & locks"]],
+ ["Entry, hall & misc",["Front door & locks","Hall walls & floors","Smoke / CO detectors","Thermostat & HVAC vents","Laundry hookups","Garage / storage / patio"]]
+];
+function renderRooms(){
+  const el=document.getElementById('rooms');
+  ROOM_DEFS.forEach((r,ri)=>{
+    const d=document.createElement('div');d.className='room';
+    d.innerHTML='<h3>🏠 '+r[0]+'</h3>'+r[1].map((it,ii)=>'<div class="item"><span>'+it+'</span><select data-room="'+ri+'" data-item="'+it+'"><option value="">Condition…</option><option>Good — no issues</option><option>Fair — minor wear</option><option>Damaged — needs note</option><option>Missing / not working</option></select></div>').join('')+'<div class="field"><label>Room notes (scratches, stains, dents — be specific)</label><textarea id="note-'+ri+'" placeholder="e.g., Two scuff marks on east wall near window, about 6 inches long"></textarea></div>';
+    el.appendChild(d);
+  });
+}
+const SHOTS=[
+ ["Wide shot of each room from the doorway","Establishes the room's overall condition."],
+ ["Close-up of every wall, left to right","Move slowly. The stains that cost you are the ones you never photographed."],
+ ["Floors: wide + close-up of any wear","Carpet stains, scratches in hardwood, cracked tile — get the close-up with a coin or key for scale."],
+ ["Every window: glass, frame, blinds, sill","Cracked glass and broken blind slats are classic deduction bait."],
+ ["Kitchen appliances, inside and out","Open the oven, fridge, dishwasher. Photograph interiors — 'not clean' charges live here."],
+ ["Bathroom: tub/shower caulk, grout, toilet base","Water damage and mold disputes hinge on day-one photos of caulk and grout lines."],
+ ["Doors, locks, keys","Deadbolts, handles, key count. Lock-outs and 'lost key' charges are pure profit without proof."],
+ ["Smoke/CO detectors and HVAC vents","Missing detectors are a safety issue and a lease violation — document they exist (or don't)."],
+ ["Any existing damage, with scale object","Every scratch, dent, stain, nail hole. Ruler, coin, or your hand in frame."],
+ ["Video walkthrough, one continuous take","Narrate the date and address at the start. A 3-minute video catches what 60 photos miss."],
+ ["Meter readings (electric, gas, water)","Photograph the meters so you're not billed for the previous tenant's usage."],
+ ["The signed inspection report itself","Photograph every page of the report you and the landlord sign."]
+];
+function generateReport(){
+  const name=v('t-name')||'[tenant name]',addr=v('t-addr')||'[property address]',date=v('t-date')||'[date]',ll=v('t-landlord')||'[landlord]',dep=v('t-deposit')||'[amount]',state=v('t-state')||'[state]';
+  let rows=[],damaged=0,total=0;
+  document.querySelectorAll('#rooms select').forEach(s=>{
+    total++;const cond=s.value||'Not rated';
+    if(cond.indexOf('Damaged')===0||cond.indexOf('Missing')===0)damaged++;
+    rows.push([ROOM_DEFS[s.dataset.room][0],s.dataset.item,cond]);
+  });
+  const sEl=document.getElementById('shots');sEl.innerHTML='';
+  SHOTS.forEach(s=>{const li=document.createElement('li');li.innerHTML=s[0]+'<small>'+s[1]+'</small>';sEl.appendChild(li);});
+  let roomnotes='';ROOM_DEFS.forEach((r,ri)=>{const n=document.getElementById('note-'+ri).value.trim();if(n)roomnotes+='  • '+r[0]+': '+n+'\n';});
+  const d=new Date().toLocaleDateString();
+  let paper='MOVE-IN INSPECTION REPORT\n'+'='.repeat(30)+'\n\n';
+  paper+='Tenant: '+name+'\nProperty: '+addr+'\nMove-in date: '+date+'\nLandlord/manager: '+ll+'\nSecurity deposit paid: $'+dep+'\nState: '+state+'\nReport generated: '+d+'\n\n';
+  paper+='CONDITION RATINGS ('+damaged+' items flagged out of '+total+' checked)\n'+'-'.repeat(30)+'\n';
+  let cur='';
+  rows.forEach(r=>{if(r[0]!==cur){cur=r[0];paper+='\n['+cur+']\n';}paper+='  • '+r[1]+': '+r[2]+'\n';});
+  if(roomnotes){paper+='\nDETAILED NOTES\n'+'-'.repeat(30)+'\n'+roomnotes;}
+  paper+='\nPHOTO & VIDEO EVIDENCE\n'+'-'.repeat(30)+'\n';
+  paper+='A complete photo set (wide + close-up per room, existing damage with scale) and a continuous video walkthrough were taken on move-in day with timestamps enabled. Originals are stored unedited by the tenant. A copy of this report was emailed to the landlord/manager within 48 hours of move-in.\n\n';
+  paper+='SIGNATURES\n'+'-'.repeat(30)+'\nTenant: _________________________  Date: _________\nLandlord/Manager: _________________________  Date: _________\n\n';
+  paper+='Both parties acknowledge this report describes the unit\'s condition at move-in. Damage listed here cannot be charged against the security deposit at move-out.\n';
+  document.getElementById('report-paper').innerHTML='<h2>Your printable move-in inspection report</h2><div style="margin-top:8px">'+escapeHtml(paper)+'</div>';
+  document.getElementById('report-out').style.display='block';
+  document.getElementById('report-out').scrollIntoView({behavior:'smooth'});
+}
+function v(id){return document.getElementById(id).value.trim();}
+function escapeHtml(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function copyReport(){
+  const t=document.getElementById('report-paper').innerText;
+  navigator.clipboard.writeText(t).then(()=>alert('Report copied — paste it into an email to your landlord.'));
+}
+
+/* ---------- STEP 3: VALIDATOR ---------- */
+const VCHECK=[
+ ["Photos taken in daylight, every room, wide + close-up","Timestamp and location enabled on the camera app."],
+ ["Every scratch, stain, dent, and nail hole photographed with scale","A coin, key, or ruler in frame turns 'wear and tear' into proof."],
+ ["One continuous video walkthrough recorded","Narrate the date and full address at the start."],
+ ["Written report completed for every room","The generator above, or any signed checklist — incomplete rooms are deduction magnets."],
+ ["Report signed by both tenant AND landlord","A one-sided report is a diary; a signed one is evidence."],
+ ["Copy emailed to landlord within 48 hours of move-in","Email subject: 'Move-in inspection report — [address] — [date]'. This is your paper trail."],
+ ["Originals stored unedited (cloud backup)","Never filter, crop, or edit. Keep metadata intact."],
+ ["Meter readings photographed on move-in day","So the previous tenant's usage isn't your bill."]
+];
+function renderV(){
+  const el=document.getElementById('vcheck');
+  VCHECK.forEach((c,i)=>{
+    const li=document.createElement('li');
+    li.innerHTML='<input type="checkbox" id="vc-'+i+'"><div class="t"><b>'+c[0]+'</b><small>'+c[1]+'</small></div>';
+    li.onclick=e=>{if(e.target.tagName!=='INPUT'){const cb=li.querySelector('input');cb.checked=!cb.checked;}};
+    el.appendChild(li);
+  });
+}
+function scoreValidator(){
+  let done=0;
+  for(let i=0;i<VCHECK.length;i++){if(document.getElementById('vc-'+i).checked)done++;}
+  const pct=Math.round(done/VCHECK.length*100);
+  let cls,t,b;
+  if(pct>=88){cls='strong';t='Deposit-Proof: '+pct+'% — you\'re protected';b='This is what wins disputes. <b>Keep the email to your landlord and the originals. At move-out, this file is your refund.</b>';}
+  else if(pct>=50){cls='mod';t='Deposit-Proof: '+pct+'% — half-protected';b='You have something, but "something" loses to a landlord with a full file. <b>Do the unchecked items now — most take under 30 minutes and expire in value after move-in day.</b>';}
+  else{cls='weak';t='Deposit-Proof: '+pct+'% — exposed';b='A deposit dispute would come down to your word against theirs. <b>Stop and finish every unchecked item before move-in day ends.</b> Photos taken next week prove next week, not day one.';}
+  document.getElementById('vresult').innerHTML='<div class="verdict '+cls+'"><div class="dot">'+(cls==='strong'?'✓':cls==='mod'?'~':'!')+'</div><div><h3>'+t+'</h3><p>'+b+'</p></div></div><div class="scorebar"><div style="width:'+pct+'%"></div></div>';
+  document.getElementById('vresult').scrollIntoView({behavior:'smooth'});
+}
+
+/* ---------- STATE NOTES ---------- */
+const STATE_NOTES={
+ 'CA':'<b>CA:</b> Deposits return within 21 days with an itemized statement. No state-mandated move-in checklist — so your own signed report + photos are the evidence a court sees. Landlords must offer a pre-move-out inspection if you ask.',
+ 'TX':'<b>TX:</b> No mandated move-in checklist — your documentation is your only defense. Deposit must be returned within 30 days after you give a forwarding address, with a written description of deductions.',
+ 'FL':'<b>FL:</b> Landlord must notify you where the deposit is held within 30 days. No mandated move-in checklist — disputes are won on evidence, which is this kit\'s entire job.',
+ 'NY':'<b>NY:</b> Deposits are capped and must be returned within 14 days with an itemized statement. No mandated move-in checklist — courts weigh photo evidence heavily in "existing damage" fights.',
+ 'WA':'<b>WA:</b> Strongest tenant rules here: a landlord who collects a deposit but never does a <b>written, signed move-in checklist</b> generally cannot withhold for pre-existing damage. Get it signed — that signature is worth more than any photo.',
+ 'Other':'<b>Your state:</b> Most states don\'t mandate a move-in checklist — which means the tenant who brings one wins the evidence fight. Send your report to the landlord in writing within 48 hours.'
+};
+function renderStates(){
+  document.getElementById('state-notes').innerHTML=Object.values(STATE_NOTES).map(s=>'<div class="statenote">'+s+'<br><small>Verify against current statutes — not legal advice.</small></div>').join('');
+}
+
+renderQuiz();renderRooms();renderV();renderStates();
+</script>
+</body>
+</html>
